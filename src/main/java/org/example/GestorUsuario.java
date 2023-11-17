@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import javax.persistence.NoResultException;
+import javax.swing.*;
 import java.util.List;
 import java.util.Scanner;
 
@@ -204,34 +205,39 @@ public class GestorUsuario {
             e.printStackTrace();
         }
     }
-    public void mostrarUsuariosConRoles() {
+    public DefaultListModel<String> obtenerInfoUsuariosConRoles() {
+        DefaultListModel<String> model = new DefaultListModel<>();
+
         try (Session session = sessionFactory.openSession()) {
             List<Usuario> usuarios = session.createQuery("FROM Usuario", Usuario.class).list();
 
             if (usuarios.isEmpty()) {
-                System.out.println("No hay usuarios registrados.");
+                model.addElement("No hay usuarios registrados.");
             } else {
-                System.out.println("Listado de Usuarios con Roles:");
                 for (Usuario usuario : usuarios) {
-                    System.out.println("ID: " + usuario.getId() + ", Nombre: " + usuario.getNombre() +
-                            ", Edad: " + usuario.getEdad() + ", Roles: " + obtenerNombresRoles(usuario.getRoles()));
+                    String userInfo = "ID: " + usuario.getId() + ", Nombre: " + usuario.getNombre() +
+                            ", Edad: " + usuario.getEdad() + ", Roles: " + obtenerNombresRoles(usuario.getRoles());
+                    model.addElement(userInfo);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
+            model.addElement("Error al obtener la información de los usuarios.");
         }
+
+        return model;
     }
 
     private String obtenerNombresRoles(List<Rol> roles) {
-        StringBuilder nombres = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         for (Rol rol : roles) {
-            nombres.append(rol.getNombre()).append(", ");
+            sb.append(rol.getNombre()).append(", ");
         }
-        // Elimina la última coma y espacio
-        if (nombres.length() > 0) {
-            nombres.delete(nombres.length() - 2, nombres.length());
+        // Elimina la coma final y espacio si hay roles
+        if (sb.length() > 0) {
+            sb.setLength(sb.length() - 2);
         }
-        return nombres.toString();
+        return sb.toString();
     }
 }
 

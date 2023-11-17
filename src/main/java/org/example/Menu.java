@@ -1,5 +1,6 @@
 package org.example;
 
+import javax.swing.*;
 import java.util.Scanner;
 
 public class Menu {
@@ -8,11 +9,15 @@ public class Menu {
     private Scanner scanner;
     private GestorUsuario gestorUsuario;
     private GestorRol gestorRol;
+    private DefaultListModel<String> usuariosListModel;
+    private JList<String> usuariosList;
 
     private Menu() {
         scanner = new Scanner(System.in);
         gestorUsuario = new GestorUsuario(Conexion.getSessionFactory(), scanner);
         gestorRol = new GestorRol(Conexion.getSessionFactory(), scanner);
+        usuariosListModel = new DefaultListModel<>();
+        usuariosList = new JList<>(usuariosListModel);
     }
 
     public static synchronized Menu getInstance() {
@@ -104,7 +109,11 @@ public class Menu {
                     gestorUsuario.mostrarRolesDeUsuario();
                     break;
                 case 7:
-                    gestorUsuario.mostrarUsuariosConRoles(); // Llama al nuevo método
+                    usuariosListModel = gestorUsuario.obtenerInfoUsuariosConRoles();
+                    usuariosList.setModel(usuariosListModel);
+
+                    JOptionPane.showMessageDialog(null, new JScrollPane(usuariosList),
+                            "Usuarios con Roles", JOptionPane.INFORMATION_MESSAGE);
                     break;
                 case 8:
                     return;
