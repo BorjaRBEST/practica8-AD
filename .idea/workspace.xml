@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="947f7e3f-600e-4b64-a3c3-551aa3e67df6" name="Changes" comment="Commit Inicio proyecto">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Conexion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="947f7e3f-600e-4b64-a3c3-551aa3e67df6" name="Changes" comment="Commit mejoras proyecto">
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/GestorUsuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/GestorUsuario.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Menu.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -64,11 +63,19 @@
       <option name="project" value="LOCAL" />
       <updated>1700225136857</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Commit mejoras proyecto">
+      <created>1700246958759</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1700246958759</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Commit Inicio proyecto" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commit Inicio proyecto" />
+    <MESSAGE value="Commit mejoras proyecto" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit mejoras proyecto" />
   </component>
 </project>

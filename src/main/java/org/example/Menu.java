@@ -77,7 +77,8 @@ public class Menu {
             System.out.println("4. Mostrar Todos los Usuarios");
             System.out.println("5. Buscar Usuario por Nombre");
             System.out.println("6. Mostrar Roles de Usuario");
-            System.out.println("7. Volver al Menú Principal");
+            System.out.println("7. Mostrar Todos los Usuarios con Roles"); // Nueva opción
+            System.out.println("8. Volver al Menú Principal");
 
             System.out.print("Seleccione una opción: ");
             int opcion = scanner.nextInt();
@@ -103,6 +104,9 @@ public class Menu {
                     gestorUsuario.mostrarRolesDeUsuario();
                     break;
                 case 7:
+                    gestorUsuario.mostrarUsuariosConRoles(); // Llama al nuevo método
+                    break;
+                case 8:
                     return;
                 default:
                     System.out.println("Opción no válida");

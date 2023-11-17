@@ -204,4 +204,34 @@ public class GestorUsuario {
             e.printStackTrace();
         }
     }
+    public void mostrarUsuariosConRoles() {
+        try (Session session = sessionFactory.openSession()) {
+            List<Usuario> usuarios = session.createQuery("FROM Usuario", Usuario.class).list();
+
+            if (usuarios.isEmpty()) {
+                System.out.println("No hay usuarios registrados.");
+            } else {
+                System.out.println("Listado de Usuarios con Roles:");
+                for (Usuario usuario : usuarios) {
+                    System.out.println("ID: " + usuario.getId() + ", Nombre: " + usuario.getNombre() +
+                            ", Edad: " + usuario.getEdad() + ", Roles: " + obtenerNombresRoles(usuario.getRoles()));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String obtenerNombresRoles(List<Rol> roles) {
+        StringBuilder nombres = new StringBuilder();
+        for (Rol rol : roles) {
+            nombres.append(rol.getNombre()).append(", ");
+        }
+        // Elimina la última coma y espacio
+        if (nombres.length() > 0) {
+            nombres.delete(nombres.length() - 2, nombres.length());
+        }
+        return nombres.toString();
+    }
 }
+
