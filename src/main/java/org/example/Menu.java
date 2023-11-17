@@ -1,33 +1,18 @@
 package org.example;
 
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-
 import java.util.Scanner;
 
 public class Menu {
 
     private static Menu instance;
-    private static final SessionFactory sessionFactory;
-
-    static {
-        try {
-            Configuration configuration = new Configuration();
-            configuration.configure();
-            sessionFactory = configuration.buildSessionFactory();
-        } catch (Throwable ex) {
-            throw new ExceptionInInitializerError(ex);
-        }
-    }
-
     private Scanner scanner;
     private GestorUsuario gestorUsuario;
     private GestorRol gestorRol;
 
     private Menu() {
         scanner = new Scanner(System.in);
-        gestorUsuario = new GestorUsuario(sessionFactory, scanner);
-        gestorRol = new GestorRol(sessionFactory, scanner);
+        gestorUsuario = new GestorUsuario(Conexion.getSessionFactory(), scanner);
+        gestorRol = new GestorRol(Conexion.getSessionFactory(), scanner);
     }
 
     public static synchronized Menu getInstance() {
@@ -36,32 +21,50 @@ public class Menu {
         }
         return instance;
     }
+    private boolean autenticar() {
+        System.out.println("\n***** Autenticación *****");
+
+        System.out.print("Usuario: ");
+        String usuario = scanner.nextLine();
+
+        System.out.print("Contraseña: ");
+        String contrasena = scanner.nextLine();
+
+        // Verificar las credenciales (usuario root y contraseña password)
+        return usuario.equals("root") && contrasena.equals("password");
+    }
 
     public void mostrarMenu() {
-        while (true) {
-            System.out.println("*****BBDD USUARIOS y ROLES*****");
-            System.out.println("-------------------------------");
-            System.out.println("1. Gestión de Usuarios");
-            System.out.println("2. Gestión de Roles");
-            System.out.println("3. Salir");
+        if (autenticar()) {// Verificar autenticación antes de entrar al menú principal
+            System.out.println("\n¡CONEXIÓN CON LA BASE DE DATOS EXITOSA!");
+            System.out.println("-----------------------------------------------");
+            while (true) {
+                System.out.println("*****BBDD USUARIOS y ROLES*****");
+                System.out.println("-------------------------------");
+                System.out.println("1. Gestión de Usuarios");
+                System.out.println("2. Gestión de Roles");
+                System.out.println("3. Salir");
 
-            System.out.print("Seleccione una opción: ");
-            int opcion = scanner.nextInt();
-            scanner.nextLine(); // Consume el salto de línea
+                System.out.print("Seleccione una opción: ");
+                int opcion = scanner.nextInt();
+                scanner.nextLine(); // Consume el salto de línea
 
-            switch (opcion) {
-                case 1:
-                    mostrarMenuUsuarios();
-                    break;
-                case 2:
-                    mostrarMenuRoles();
-                    break;
-                case 3:
-                    System.out.println("Saliendo...");
-                    System.exit(0);
-                default:
-                    System.out.println("Opción no válida");
+                switch (opcion) {
+                    case 1:
+                        mostrarMenuUsuarios();
+                        break;
+                    case 2:
+                        mostrarMenuRoles();
+                        break;
+                    case 3:
+                        System.out.println("Cerrando la Conexión con la BBDD...");
+                        System.exit(0);
+                    default:
+                        System.out.println("Opción no válida");
+                }
             }
+        } else {
+            System.out.println("Autenticación fallida. Saliendo...");
         }
     }
 
