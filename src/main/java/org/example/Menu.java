@@ -5,7 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-import java.util.ArrayList;
+import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -40,13 +40,15 @@ public class Menu {
     public void mostrarMenu() {
         while (true) {
             System.out.println("*****BBDD USUARIOS y ROLES*****");
+            System.out.println("-------------------------------");
             System.out.println("1. Añadir Usuario");
             System.out.println("2. Modificar Usuario");
             System.out.println("3. Eliminar Usuario");
             System.out.println("4. Mostrar Todos los Usuarios");
             System.out.println("5. Buscar Usuario por Nombre");
             System.out.println("6. Mostrar Todos los Roles");
-            System.out.println("7. Salir");
+            System.out.println("7. Mostrar Roles y Usuarios asignados");
+            System.out.println("8. Salir");
 
             System.out.print("Seleccione una opción: ");
             int opcion = scanner.nextInt();
@@ -72,6 +74,9 @@ public class Menu {
                     mostrarTodosLosRoles();
                     break;
                 case 7:
+                    mostrarRolesDeUsuario();
+                    break;
+                case 8:
                     System.out.println("Saliendo...");
                     System.exit(0);
                 default:
@@ -89,14 +94,37 @@ public class Menu {
 
             System.out.print("Edad del Usuario: ");
             int edad = scanner.nextInt();
+            scanner.nextLine(); // Consume el salto de línea
+
+            // Mostrar menú de selección de roles
+            System.out.println("Seleccione el Rol del Usuario:");
+            System.out.println("1. Admin");
+            System.out.println("2. Moderador");
+            System.out.println("3. Usuario Regular");
+            System.out.print("Seleccione una opción: ");
+            int opcionRol = scanner.nextInt();
+            scanner.nextLine(); // Consume el salto de línea
+
+            Rol rol;
+            switch (opcionRol) {
+                case 1:
+                    rol = obtenerRolPorNombre(session, "Admin");
+                    break;
+                case 2:
+                    rol = obtenerRolPorNombre(session, "Moderador");
+                    break;
+                case 3:
+                    rol = obtenerRolPorNombre(session, "Usuario Regular");
+                    break;
+                default:
+                    System.out.println("Opción no válida. Asignando rol por defecto (Usuario Regular).");
+                    rol = obtenerRolPorNombre(session, "Usuario Regular");
+            }
 
             Usuario usuario = new Usuario();
             usuario.setNombre(nombre);
             usuario.setEdad(edad);
-
-            // Agregar roles al usuario
-            List<Rol> roles = obtenerRoles(session);
-            usuario.setRoles(roles);
+            usuario.setRoles(List.of(rol));
 
             session.save(usuario);
 
@@ -106,11 +134,21 @@ public class Menu {
             e.printStackTrace();
         }
     }
-
-    // Método para obtener la lista de roles desde la base de datos
-    private List<Rol> obtenerRoles(Session session) {
-        return session.createQuery("FROM Rol", Rol.class).list();
+    private Rol obtenerRolPorNombre(Session session, String nombreRol) {
+        try {
+            return session.createQuery("FROM Rol WHERE nombre = :nombre", Rol.class)
+                    .setParameter("nombre", nombreRol)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            System.out.println("Rol '" + nombreRol + "' no encontrado. Asignando rol por defecto (Usuario Regular).");
+            return session.createQuery("FROM Rol WHERE nombre = 'Usuario Regular'", Rol.class)
+                    .getSingleResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
+
 
     private void modificarUsuario() {
         try (Session session = sessionFactory.openSession()) {
@@ -224,4 +262,31 @@ public class Menu {
             e.printStackTrace();
         }
     }
+    private void mostrarRolesDeUsuario() {
+        try (Session session = sessionFactory.openSession()) {
+            System.out.print("Ingrese el ID del Usuario para ver sus roles: ");
+            long userId = scanner.nextLong();
+            scanner.nextLine(); // Consume el salto de línea
+
+            Usuario usuario = session.get(Usuario.class, userId);
+
+            if (usuario != null) {
+                List<Rol> roles = usuario.getRoles();
+
+                if (roles.isEmpty()) {
+                    System.out.println("El usuario no tiene roles asignados.");
+                } else {
+                    System.out.println("Roles del Usuario " + usuario.getNombre() + ":");
+                    for (Rol rol : roles) {
+                        System.out.println("ID: " + rol.getId() + ", Nombre: " + rol.getNombre());
+                    }
+                }
+            } else {
+                System.out.println("Usuario con ID " + userId + " no encontrado.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
