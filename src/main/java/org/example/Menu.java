@@ -3,14 +3,17 @@ package org.example;
 import javax.swing.*;
 import java.util.Scanner;
 
+/**
+ * Clase que representa el menú de la aplicación.
+ */
 public class Menu {
 
     private static Menu instance;
-    private Scanner scanner;
-    private GestorUsuario gestorUsuario;
-    private GestorRol gestorRol;
+    private final Scanner scanner;
+    private final GestorUsuario gestorUsuario;
+    private final GestorRol gestorRol;
     private DefaultListModel<String> usuariosListModel;
-    private JList<String> usuariosList;
+    private final JList<String> usuariosList;
 
     private Menu() {
         scanner = new Scanner(System.in);
@@ -20,12 +23,18 @@ public class Menu {
         usuariosList = new JList<>(usuariosListModel);
     }
 
+    /**
+     * Método estático para obtener la instancia única del menú.
+     *
+     * @return La instancia única del menú.
+     */
     public static synchronized Menu getInstance() {
         if (instance == null) {
             instance = new Menu();
         }
         return instance;
     }
+
     private boolean autenticar() {
         System.out.println("\n***** Autenticación *****");
 
@@ -39,6 +48,9 @@ public class Menu {
         return usuario.equals("root") && contrasena.equals("password");
     }
 
+    /**
+     * Método principal para mostrar el menú y gestionar las opciones.
+     */
     public void mostrarMenu() {
         if (autenticar()) {// Verificar autenticación antes de entrar al menú principal
             System.out.println("\n¡CONEXIÓN CON LA BASE DE DATOS EXITOSA!");

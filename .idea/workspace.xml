@@ -5,7 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="947f7e3f-600e-4b64-a3c3-551aa3e67df6" name="Changes" comment="Commit mejoras proyecto">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/log4j.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Conexion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Conexion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/GestorRol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/GestorRol.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/GestorUsuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/GestorUsuario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Menu.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

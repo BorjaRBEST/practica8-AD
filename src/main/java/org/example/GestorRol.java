@@ -3,9 +3,13 @@ package org.example;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Clase que gestiona las operaciones relacionadas con los roles en la base de datos.
+ */
 public class GestorRol {
 
     private final SessionFactory sessionFactory;
@@ -16,13 +20,18 @@ public class GestorRol {
         this.scanner = scanner;
     }
 
+    /**
+     * Agrega un nuevo rol a la base de datos.
+     */
     public void agregarRol() {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
 
+            // Capturar nombre del nuevo rol
             System.out.print("Nombre del Rol: ");
             String nombre = scanner.nextLine();
 
+            // Crear y guardar el nuevo rol
             Rol rol = new Rol();
             rol.setNombre(nombre);
 
@@ -35,6 +44,9 @@ public class GestorRol {
         }
     }
 
+    /**
+     * Muestra todos los roles almacenados en la base de datos.
+     */
     public void mostrarTodosLosRoles() {
         try (Session session = sessionFactory.openSession()) {
             List<Rol> roles = session.createQuery("FROM Rol", Rol.class).list();
@@ -52,6 +64,9 @@ public class GestorRol {
         }
     }
 
+    /**
+     * Busca y muestra roles por su nombre.
+     */
     public void buscarRolPorNombre() {
         System.out.print("Ingrese el nombre a buscar: ");
         String nombre = scanner.nextLine();
@@ -74,20 +89,26 @@ public class GestorRol {
         }
     }
 
+    /**
+     * Modifica la información de un rol existente.
+     */
     public void modificarRol() {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
 
+            // Capturar ID del rol a modificar
             System.out.print("Ingrese el ID del Rol a modificar: ");
             long rolId = scanner.nextLong();
-            scanner.nextLine(); // Consume el salto de línea
+            scanner.nextLine(); // Consumir salto de línea
 
             Rol rol = session.get(Rol.class, rolId);
 
             if (rol != null) {
+                // Capturar nuevo nombre para el rol
                 System.out.print("Nuevo Nombre del Rol: ");
                 String nuevoNombre = scanner.nextLine();
 
+                // Actualizar la información del rol
                 rol.setNombre(nuevoNombre);
 
                 session.update(rol);
@@ -103,17 +124,22 @@ public class GestorRol {
         }
     }
 
+    /**
+     * Elimina un rol de la base de datos.
+     */
     public void eliminarRol() {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
 
+            // Capturar ID del rol a eliminar
             System.out.print("Ingrese el ID del Rol a eliminar: ");
             long rolId = scanner.nextLong();
-            scanner.nextLine(); // Consume el salto de línea
+            scanner.nextLine(); // Consumir salto de línea
 
             Rol rol = session.get(Rol.class, rolId);
 
             if (rol != null) {
+                // Eliminar el rol
                 session.delete(rol);
                 System.out.println("Rol eliminado correctamente.");
             } else {
